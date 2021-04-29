@@ -1,5 +1,5 @@
 import { attr$, Stream$, VirtualDOM } from '@youwol/flux-view'
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs'
+import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs'
 
 import { map } from 'rxjs/operators'
 
@@ -9,21 +9,26 @@ export namespace Slider {
 
     export class State {
 
-        public readonly min$: BehaviorSubject<number> 
-        public readonly max$: BehaviorSubject<number> 
+        public readonly min$: Observable<number> 
+        public readonly max$: Observable<number> 
         public readonly value$: BehaviorSubject<number> 
         public readonly step$: Observable<number> 
         public readonly count$ : Observable<number>
 
         constructor(
-            min: BehaviorSubject<number> | number = 0,
-            max: BehaviorSubject<number> | number = 1,
-            value: BehaviorSubject<number> | number = 0.5,
-            count: BehaviorSubject<number> | number = 0.5 ) {
-            this.min$ = (min instanceof BehaviorSubject) ? min : new BehaviorSubject<number>(min as number)
-            this.max$ = (max instanceof BehaviorSubject) ? max : new BehaviorSubject<number>(max as number)
+            { min, max, value, count }:
+            {
+                min: Observable<number> | number,
+                max: Observable<number> | number,
+                value: BehaviorSubject<number> | number,
+                count: Observable<number> | number 
+            }) {
+
             this.value$ = (value instanceof BehaviorSubject) ? value : new BehaviorSubject<number>(value as number)
-            this.count$ = (count instanceof BehaviorSubject) ? count : new BehaviorSubject<number>(count as number)
+
+            this.min$ = (min instanceof Observable) ? min : of(min)
+            this.max$ = (max instanceof Observable) ? max : of(max)
+            this.count$ = (count instanceof Observable) ? count : of(count)
             this.step$ = combineLatest([this.min$, this.max$, this.count$]).pipe( map(([min,max, count])=> (max-min)/count))
         }
     }
