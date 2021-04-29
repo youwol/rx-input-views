@@ -2,11 +2,11 @@
     <head>
         <script src="https://unpkg.com/rxjs@6/bundles/rxjs.umd.min.js"></script>
         
-        <script src="https://unpkg.com/@youwol/flux-view@0.0.5/dist/@youwol/flux-view.js"></script>        
-        <script src="https://unpkg.com/@youwol/fv-button@0.0.0/dist/@youwol/fv-button.js"></script>
+        <script src="https://unpkg.com/@youwol/flux-view@0.0.8/dist/@youwol/flux-view.js"></script>        
+        <script src="https://unpkg.com/@youwol/fv-button@0.0.3/dist/@youwol/fv-button.js"></script>
 
         
-        <script src="https://unpkg.com/@youwol/fv-input@0.0.0/dist/@youwol/fv-input"  ></script>
+        <script src="https://unpkg.com/@youwol/fv-input@0.0.3/dist/@youwol/fv-input"  ></script>
         <!--
             <script src="../../../dist/@youwol/fv-input.js"  ></script>
             <script src="https://unpkg.com/@youwol/fv-input@0.0.0/dist/@youwol/fv-input"  ></script>
@@ -180,7 +180,7 @@
                 .pipe( rxjs.operators.distinctUntilChanged())
                 .subscribe( (color) => value$.next(  hexToRgb(color)[c] ))
 
-                let sliderState = new Slider.State(0, 255,value$, 255)
+                let sliderState = new Slider.State({min:0, max:255, value:value$, count:255})
                 return new Slider.View( { 
                     state: sliderState, 
                     class:'fv-slider',
