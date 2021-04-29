@@ -11,9 +11,11 @@ export namespace Slider {
 
         public readonly min$: Observable<number> 
         public readonly max$: Observable<number> 
-        public readonly value$: BehaviorSubject<number> 
         public readonly step$: Observable<number> 
         public readonly count$ : Observable<number>
+
+        public readonly value$: BehaviorSubject<number> 
+        public readonly data$ = new Subject<{fromListener:string, event: MouseEvent, value: number}>()
 
         constructor(
             { min, max, value, count }:
@@ -24,12 +26,23 @@ export namespace Slider {
                 count: Observable<number> | number 
             }) {
 
-            this.value$ = (value instanceof BehaviorSubject) ? value : new BehaviorSubject<number>(value as number)
+            this.value$ = (value instanceof BehaviorSubject) 
+                ? value 
+                : new BehaviorSubject<number>(value as number)
 
-            this.min$ = (min instanceof Observable) ? min : of(min)
-            this.max$ = (max instanceof Observable) ? max : of(max)
-            this.count$ = (count instanceof Observable) ? count : of(count)
-            this.step$ = combineLatest([this.min$, this.max$, this.count$]).pipe( map(([min,max, count])=> (max-min)/count))
+            this.min$ = (min instanceof Observable) 
+                ? min 
+                : of(min)
+            this.max$ = (max instanceof Observable) 
+                ? max 
+                : of(max)
+            this.count$ = (count instanceof Observable) 
+                ? count 
+                : of(count)
+
+            this.step$ = combineLatest([this.min$, this.max$, this.count$]).pipe(
+                 map(([min,max, count])=> (max-min)/count)
+                 )
         }
     }
 
@@ -45,9 +58,18 @@ export namespace Slider {
         public readonly step : Stream$<number, number>
         public readonly value : Stream$<number, number>
 
-        oninput = (ev) => {
-            let v = Number(ev.target.value)
-            v != this.state.value$.getValue() &&  this.state.value$.next(v)
+        onBase = (event: MouseEvent, fromListener: string) => {
+            let value = Number(event.target['value']);
+            if( value!= this.state.value$.getValue()){
+                this.state.value$.next(value)
+            }
+            this.state.data$.next({value, event, fromListener})
+        }
+        oninput = (ev: MouseEvent) => {
+            this.onBase(ev,'oninput')
+        }
+        onchange = (ev: MouseEvent) => {
+            this.onBase(ev,'onchange')
         }
 
         constructor(
