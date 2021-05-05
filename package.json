@@ -7,7 +7,7 @@
         "view",
         "input"
     ],
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Input widgets using flux-view",
     "author": "Guillaume Reinisch",
     "license": "MIT",
