@@ -58,7 +58,7 @@ export namespace Select {
             this.children = children$(data$, ([selection, items]) => {
                 return items.map( (item,i) =>({ 
                     tag: 'option', 
-                    selected: selection.id == item.id ? 'selected' : undefined,
+                    selected: selection && selection.id == item.id ? 'selected' : undefined,
                     value: item.id, 
                     innerText: item.name
                 })) 
