@@ -1,9 +1,6 @@
-/*
- * Public API Surface of flux-lib-core
- */
-
- export {Select} from './lib/select.view'
- export {TextInput} from './lib/text-input.view'
- export {NumberInput} from './lib/number-input.view'
- export {ColorPicker} from './lib/color-picker.view'
- export {Slider} from './lib/slider.view'
+export { Select } from './lib/select.view'
+export { TextInput } from './lib/text-input.view'
+export { NumberInput } from './lib/number-input.view'
+export { ColorPicker } from './lib/color-picker.view'
+export { Slider } from './lib/slider.view'
+export { setup } from './auto-generated'
