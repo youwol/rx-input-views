@@ -2,7 +2,7 @@ import { render } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 import { Select } from '../index'
 
-test('select', (done) => {
+test('select', async () => {
     const items$ = new BehaviorSubject([
         new Select.ItemData('a', 'a'),
         new Select.ItemData('b', 'b'),
@@ -34,13 +34,12 @@ test('select', (done) => {
     // => we simulate the change
     view.onchange({ target: [{ selected: true, value: 'a' }] })
 
-    state.selectionId$.subscribe((d) => {
-        expect(d).toBe('a')
-        done()
+    state.selectionId$.subscribe((v) => {
+        expect(v).toBe('a')
     })
 })
 
-test('select wit dynamic items & new selectedId', (done) => {
+test('select wit dynamic items & new selectedId', () => {
     document.body.innerHTML = ''
     const items$ = new BehaviorSubject([
         new Select.ItemData('a', 'a'),
@@ -64,5 +63,4 @@ test('select wit dynamic items & new selectedId', (done) => {
     items = Array.from(document.querySelectorAll('option'))
     expect(items.map((elem) => elem.innerText)).toEqual(['a', 'c'])
     expect(items[0].selected).toBeTruthy()
-    done()
 })

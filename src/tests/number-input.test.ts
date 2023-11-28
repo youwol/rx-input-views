@@ -2,7 +2,7 @@ import { render } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 import { NumberInput } from '../index'
 
-test('simple scenario', (done) => {
+test('simple scenario', async () => {
     const value$ = new BehaviorSubject(0)
     const state = new NumberInput.State(value$)
 
@@ -20,6 +20,5 @@ test('simple scenario', (done) => {
     view.oninput({ target: { value: '2' } } as never)
     value$.subscribe((v) => {
         expect(v).toBe(2)
-        done()
     })
 })

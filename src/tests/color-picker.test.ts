@@ -2,7 +2,7 @@ import { render } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 import { ColorPicker } from '../index'
 
-test('select', (done) => {
+test('select', async () => {
     const color$ = new BehaviorSubject('#abcdef')
     const state = new ColorPicker.State(color$)
 
@@ -20,6 +20,5 @@ test('select', (done) => {
     input.onchange({ target: { value: '#ffffff' } } as never)
     color$.subscribe((v) => {
         expect(v).toBe('#ffffff')
-        done()
     })
 })

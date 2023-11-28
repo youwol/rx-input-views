@@ -1,9 +1,9 @@
 import { render } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
-import { skip, take } from 'rxjs/operators'
+import { take } from 'rxjs/operators'
 import { Slider } from '../index'
 
-test('slider', (done) => {
+test('slider', async () => {
     const min$ = new BehaviorSubject(0)
     const max$ = new BehaviorSubject(10)
     const value$ = new BehaviorSubject(5)
@@ -30,19 +30,14 @@ test('slider', (done) => {
     expect(input.min).toBe('4')
 
     // Not working to trigger event : input.dispatchEvent(new MouseEvent("click"))
-
+    view.onchange({ target: { value: 7 } } as never)
     state.data$.pipe(take(1)).subscribe(({ fromListener, value }) => {
         expect(value).toBe(7)
         expect(fromListener).toBe('onchange')
     })
-    state.data$.pipe(skip(1), take(1)).subscribe(({ fromListener, value }) => {
+    view.oninput({ target: { value: 2 } } as never)
+    state.data$.pipe(take(1)).subscribe(({ fromListener, value }) => {
         expect(value).toBe(2)
         expect(fromListener).toBe('oninput')
-        done()
     })
-    view.onchange({ target: { value: 7 } } as never)
-    state.value$.subscribe((d) => {
-        expect(d).toBe(7)
-    })
-    view.oninput({ target: { value: 2 } } as never)
 })

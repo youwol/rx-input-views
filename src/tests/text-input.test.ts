@@ -2,7 +2,7 @@ import { render } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 import { TextInput } from '../index'
 
-test('select', (done) => {
+test('select', async () => {
     const value$ = new BehaviorSubject('hello')
     const state = new TextInput.State(value$)
 
@@ -20,6 +20,5 @@ test('select', (done) => {
     input.oninput({ target: { value: 'hello world' } } as never)
     value$.subscribe((v) => {
         expect(v).toBe('hello world')
-        done()
     })
 })
