@@ -1,25 +1,25 @@
-import { render } from '@youwol/flux-view'
+import { render } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 import { ColorPicker } from '../index'
 
 test('select', (done) => {
-    let color$ = new BehaviorSubject('#abcdef')
-    let state = new ColorPicker.State(color$)
+    const color$ = new BehaviorSubject('#abcdef')
+    const state = new ColorPicker.State(color$)
 
-    let view = new ColorPicker.View({ state })
+    const view = new ColorPicker.View({ state })
 
-    let div = render(view)
+    const div = render(view)
 
     document.body.appendChild(div)
-    let input = document.querySelector('input')
-    expect(input.value).toEqual('#abcdef')
+    const input = document.querySelector('input')
+    expect(input.value).toBe('#abcdef')
 
     color$.next('#fedcba')
-    expect(input.value).toEqual('#fedcba')
+    expect(input.value).toBe('#fedcba')
 
-    input.onchange({ target: { value: '#ffffff' } } as any)
+    input.onchange({ target: { value: '#ffffff' } } as never)
     color$.subscribe((v) => {
-        expect(v).toEqual('#ffffff')
+        expect(v).toBe('#ffffff')
         done()
     })
 })

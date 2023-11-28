@@ -1,48 +1,48 @@
-import { render } from '@youwol/flux-view'
+import { render } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 import { skip, take } from 'rxjs/operators'
 import { Slider } from '../index'
 
 test('slider', (done) => {
-    let min$ = new BehaviorSubject(0)
-    let max$ = new BehaviorSubject(10)
-    let value$ = new BehaviorSubject(5)
+    const min$ = new BehaviorSubject(0)
+    const max$ = new BehaviorSubject(10)
+    const value$ = new BehaviorSubject(5)
 
-    let state = new Slider.State({
+    const state = new Slider.State({
         min: min$,
         max: max$,
         value: value$,
         count: 100,
     })
 
-    let view = new Slider.View({ state })
+    const view = new Slider.View({ state })
 
-    let div = render(view)
+    const div = render(view)
 
     document.body.appendChild(div)
 
-    let input = document.querySelector('input')
-    expect(input.min).toEqual('0')
-    expect(input.max).toEqual('10')
-    expect(input.value).toEqual('5')
+    const input = document.querySelector('input')
+    expect(input.min).toBe('0')
+    expect(input.max).toBe('10')
+    expect(input.value).toBe('5')
 
     min$.next(4)
-    expect(input.min).toEqual('4')
+    expect(input.min).toBe('4')
 
     // Not working to trigger event : input.dispatchEvent(new MouseEvent("click"))
 
     state.data$.pipe(take(1)).subscribe(({ fromListener, value }) => {
-        expect(value).toEqual(7)
-        expect(fromListener).toEqual('onchange')
+        expect(value).toBe(7)
+        expect(fromListener).toBe('onchange')
     })
     state.data$.pipe(skip(1), take(1)).subscribe(({ fromListener, value }) => {
-        expect(value).toEqual(2)
-        expect(fromListener).toEqual('oninput')
+        expect(value).toBe(2)
+        expect(fromListener).toBe('oninput')
         done()
     })
-    view.onchange({ target: { value: 7 } } as any)
+    view.onchange({ target: { value: 7 } } as never)
     state.value$.subscribe((d) => {
-        expect(d).toEqual(7)
+        expect(d).toBe(7)
     })
-    view.oninput({ target: { value: 2 } } as any)
+    view.oninput({ target: { value: 2 } } as never)
 })

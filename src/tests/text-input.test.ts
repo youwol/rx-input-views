@@ -1,25 +1,25 @@
-import { render } from '@youwol/flux-view'
+import { render } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 import { TextInput } from '../index'
 
 test('select', (done) => {
-    let value$ = new BehaviorSubject('hello')
-    let state = new TextInput.State(value$)
+    const value$ = new BehaviorSubject('hello')
+    const state = new TextInput.State(value$)
 
-    let view = new TextInput.View({ state })
+    const view = new TextInput.View({ state })
 
-    let div = render(view)
+    const div = render(view)
 
     document.body.appendChild(div)
-    let input = document.querySelector('input')
-    expect(input.value).toEqual('hello')
+    const input = document.querySelector('input')
+    expect(input.value).toBe('hello')
 
     value$.next('world')
-    expect(input.value).toEqual('world')
+    expect(input.value).toBe('world')
 
-    input.oninput({ target: { value: 'hello world' } } as any)
+    input.oninput({ target: { value: 'hello world' } } as never)
     value$.subscribe((v) => {
-        expect(v).toEqual('hello world')
+        expect(v).toBe('hello world')
         done()
     })
 })

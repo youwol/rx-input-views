@@ -1,18 +1,18 @@
-import { render } from '@youwol/flux-view'
+import { render } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 import { Select } from '../index'
 
 test('select', (done) => {
-    let items$ = new BehaviorSubject([
+    const items$ = new BehaviorSubject([
         new Select.ItemData('a', 'a'),
         new Select.ItemData('b', 'b'),
     ])
-    let id$ = new BehaviorSubject('b')
-    let state = new Select.State(items$, id$)
+    const id$ = new BehaviorSubject('b')
+    const state = new Select.State(items$, id$)
 
-    let view = new Select.View({ state })
+    const view = new Select.View({ state })
 
-    let div = render(view)
+    const div = render(view)
 
     document.body.appendChild(div)
 
@@ -35,23 +35,23 @@ test('select', (done) => {
     view.onchange({ target: [{ selected: true, value: 'a' }] })
 
     state.selectionId$.subscribe((d) => {
-        expect(d).toEqual('a')
+        expect(d).toBe('a')
         done()
     })
 })
 
 test('select wit dynamic items & new selectedId', (done) => {
     document.body.innerHTML = ''
-    let items$ = new BehaviorSubject([
+    const items$ = new BehaviorSubject([
         new Select.ItemData('a', 'a'),
         new Select.ItemData('b', 'b'),
     ])
-    let id$ = new BehaviorSubject('b')
-    let state = new Select.State(items$, id$)
+    const id$ = new BehaviorSubject('b')
+    const state = new Select.State(items$, id$)
 
-    let view = new Select.View({ state })
+    const view = new Select.View({ state })
 
-    let div = render(view)
+    const div = render(view)
 
     document.body.appendChild(div)
 

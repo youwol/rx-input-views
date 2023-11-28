@@ -1,4 +1,4 @@
-import { attr$, Stream$, VirtualDOM } from '@youwol/flux-view'
+import { AttributeLike, VirtualDOM } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 
 import { distinctUntilChanged } from 'rxjs/operators'
@@ -15,21 +15,21 @@ export namespace TextInput {
         }
     }
 
-    export class View implements VirtualDOM {
+    export class View implements VirtualDOM<'input'> {
         public readonly state: State
         public readonly tag = 'input'
         public readonly type = 'text'
-        public readonly value: Stream$<string, string>
+        public readonly value: AttributeLike<string>
 
         oninput = (ev) => this.state.value$.next(ev.target.value)
 
         constructor({ state, ...rest }: { state: State }) {
             Object.assign(this, rest)
             this.state = state
-            this.value = attr$(
-                state.value$.pipe(distinctUntilChanged()),
-                (v) => v,
-            )
+            this.value = {
+                source$: state.value$.pipe(distinctUntilChanged()),
+                vdomMap: (v) => `${v}`,
+            }
         }
     }
 }

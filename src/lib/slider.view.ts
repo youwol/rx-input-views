@@ -1,4 +1,4 @@
-import { attr$, Stream$, VirtualDOM } from '@youwol/flux-view'
+import { AttributeLike, VirtualDOM } from '@youwol/rx-vdom'
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs'
 import { map } from 'rxjs/operators'
 
@@ -44,18 +44,18 @@ export namespace Slider {
         }
     }
 
-    export class View implements VirtualDOM {
+    export class View implements VirtualDOM<'input'> {
         public readonly state: State
         public readonly tag = 'input'
         public readonly type = 'range'
 
-        public readonly min: Stream$<number, number>
-        public readonly max: Stream$<number, number>
-        public readonly step: Stream$<number, number>
-        public readonly value: Stream$<number, number>
+        public readonly min: AttributeLike<string>
+        public readonly max: AttributeLike<string>
+        public readonly step: AttributeLike<string>
+        public readonly value: AttributeLike<string>
 
         onBase = (event: MouseEvent, fromListener: string) => {
-            let value = Number(event.target['value'])
+            const value = Number(event.target['value'])
             if (value != this.state.value$.getValue()) {
                 this.state.value$.next(value)
             }
@@ -71,10 +71,10 @@ export namespace Slider {
         constructor({ state, ...rest }: { state: State }) {
             Object.assign(this, rest)
             this.state = state
-            this.min = attr$(this.state.min$, (d) => d)
-            this.max = attr$(this.state.max$, (d) => d)
-            this.step = attr$(this.state.step$, (d) => d)
-            this.value = attr$(this.state.value$, (d) => d)
+            this.min = { source$: this.state.min$, vdomMap: (d) => `${d}` }
+            this.max = { source$: this.state.max$, vdomMap: (d) => `${d}` }
+            this.step = { source$: this.state.step$, vdomMap: (d) => `${d}` }
+            this.value = { source$: this.state.value$, vdomMap: (d) => `${d}` }
         }
     }
 }

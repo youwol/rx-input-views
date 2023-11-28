@@ -1,10 +1,13 @@
-import { children$, Stream$, VirtualDOM } from '@youwol/flux-view'
+import { ChildrenLike, VirtualDOM } from '@youwol/rx-vdom'
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 export namespace Select {
     export class ItemData {
-        constructor(public readonly id: string, public readonly name: string) {}
+        constructor(
+            public readonly id: string,
+            public readonly name: string,
+        ) {}
     }
 
     export class State {
@@ -37,16 +40,13 @@ export namespace Select {
         }
     }
 
-    export class View implements VirtualDOM {
+    export class View implements VirtualDOM<'select'> {
         public readonly state: State
         public readonly tag = 'select'
-        public readonly children: Stream$<
-            [ItemData, Array<ItemData>],
-            Array<VirtualDOM>
-        >
+        public readonly children: ChildrenLike
 
         onchange = (ev) => {
-            let option = Array.from(ev.target).find(
+            const option = Array.from(ev.target).find(
                 (optionElem) => optionElem['selected'],
             )
             this.state.selectionId$.next(option['value'])
@@ -56,25 +56,30 @@ export namespace Select {
             Object.assign(this, rest)
 
             this.state = state
-            let data$ = combineLatest([
+            const data$ = combineLatest([
                 this.state.selection$,
                 this.state.items$,
             ])
 
-            this.children = children$(data$, ([selection, items]) => {
-                return items.map((item) => ({
-                    tag: 'option',
-                    selected:
-                        selection && selection.id == item.id
-                            ? 'selected'
-                            : undefined,
-                    value: item.id,
-                    innerText: item.name,
-                    onclick: () => {
-                        this.state.selectionId$.next(item.id)
-                    },
-                }))
-            })
+            this.children = {
+                policy: 'replace',
+                source$: data$,
+                vdomMap: ([selection, items]) => {
+                    return items.map((item) => ({
+                        tag: 'option',
+                        selected:
+                            selection && selection.id == item.id
+                                ? 'selected'
+                                : undefined,
+                        value: item.id,
+                        innerText: item.name,
+                        onclick: () => {
+                            this.state.selectionId$.next(item.id)
+                        },
+                    }))
+                },
+            }
         }
+        [name: number]: never
     }
 }

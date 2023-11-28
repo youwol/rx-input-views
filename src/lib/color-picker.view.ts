@@ -1,4 +1,4 @@
-import { attr$, Stream$, VirtualDOM } from '@youwol/flux-view'
+import { VirtualDOM, AttributeLike } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 
 export namespace ColorPicker {
@@ -13,19 +13,19 @@ export namespace ColorPicker {
         }
     }
 
-    export class View implements VirtualDOM {
+    export class View implements VirtualDOM<'input'> {
         public readonly state: State
         public readonly tag = 'input'
         public readonly type = 'color'
-        public readonly onchange = (event: any) =>
+        public readonly onchange = (event) =>
             this.state.color$.next(event.target.value)
 
-        public readonly value: Stream$<string>
+        public readonly value: AttributeLike<string>
 
         constructor({ state, ...rest }: { state: State }) {
             this.state = state
             Object.assign(this, rest)
-            this.value = attr$(state.color$, (color) => color)
+            this.value = state.color$
         }
     }
 }
