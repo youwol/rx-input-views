@@ -1,5 +1,11 @@
 import { AttributeLike, VirtualDOM } from '@youwol/rx-vdom'
-import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs'
+import {
+    BehaviorSubject,
+    combineLatest,
+    Observable,
+    of,
+    ReplaySubject,
+} from 'rxjs'
 import { map } from 'rxjs/operators'
 
 export namespace Slider {
@@ -10,11 +16,11 @@ export namespace Slider {
         public readonly count$: Observable<number>
 
         public readonly value$: BehaviorSubject<number>
-        public readonly data$ = new Subject<{
+        public readonly data$ = new ReplaySubject<{
             fromListener: string
             event: MouseEvent
             value: number
-        }>()
+        }>(1)
 
         constructor({
             min,
