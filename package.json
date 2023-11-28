@@ -1,6 +1,6 @@
 {
-    "name": "@youwol/fv-input",
-    "description": "Input widgets using flux-view",
+    "name": "@youwol/rx-input-views",
+    "description": "Input widgets using rx-vdom",
     "version": "0.3.0-wip",
     "author": "greinisch@youwol.com",
     "homepage": "https://github.com/youwol/fv-input#README.md",
