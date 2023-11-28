@@ -40,7 +40,7 @@ const exportedSymbols = {
 export const setup = {
     name:'@youwol/fv-input',
         assetId:'QHlvdXdvbC9mdi1pbnB1dA==',
-    version:'0.2.1',
+    version:'0.3.0-wip',
     shortDescription:"Input widgets using flux-view",
     developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/fv-input',
     npmPackage:'https://www.npmjs.com/package/@youwol/fv-input',

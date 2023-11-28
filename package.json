@@ -1,7 +1,7 @@
 {
     "name": "@youwol/fv-input",
     "description": "Input widgets using flux-view",
-    "version": "0.2.1",
+    "version": "0.3.0-wip",
     "author": "greinisch@youwol.com",
     "homepage": "https://github.com/youwol/fv-input#README.md",
     "main": "dist/@youwol/fv-input.js",
