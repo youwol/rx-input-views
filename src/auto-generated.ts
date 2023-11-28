@@ -54,7 +54,7 @@ const entries = {
 export const setup = {
     name:'@youwol/rx-input-views',
         assetId:'QHlvdXdvbC9yeC1pbnB1dC12aWV3cw==',
-    version:'0.3.0-wip',
+    version:'0.3.0',
     shortDescription:"Input widgets using rx-vdom",
     developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/rx-input-views&tab=doc',
     npmPackage:'https://www.npmjs.com/package/@youwol/rx-input-views',
@@ -100,7 +100,7 @@ export const setup = {
         const parameters = installParameters || {}
         const scripts = [
             ...(parameters.scripts || []),
-            `@youwol/rx-input-views#0.3.0-wip~dist/@youwol/rx-input-views/${entry.name}.js`
+            `@youwol/rx-input-views#0.3.0~dist/@youwol/rx-input-views/${entry.name}.js`
         ]
         const modules = [
             ...(parameters.modules || []),
