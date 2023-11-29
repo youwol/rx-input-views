@@ -1,7 +1,5 @@
-import { attr$, Stream$, VirtualDOM } from '@youwol/flux-view'
-import { BehaviorSubject } from 'rxjs'
-
-import { distinctUntilChanged } from 'rxjs/operators'
+import { AttributeLike, VirtualDOM } from '@youwol/rx-vdom'
+import { BehaviorSubject, distinctUntilChanged, map } from 'rxjs'
 
 export namespace NumberInput {
     export class State {
@@ -29,13 +27,13 @@ export namespace NumberInput {
         }
     }
 
-    export class View implements VirtualDOM {
+    export class View implements VirtualDOM<'input'> {
         public readonly state: State
         public readonly tag = 'input'
         public readonly type = 'text'
-        public readonly value: Stream$<number>
-        public readonly min: Stream$<number>
-        public readonly max: Stream$<number>
+        public readonly value: AttributeLike<string>
+        public readonly min: AttributeLike<string>
+        public readonly max: AttributeLike<string>
 
         oninput = (ev) => {
             let v = parseFloat(ev.target.value)
@@ -43,20 +41,27 @@ export namespace NumberInput {
                 Math.max(v, this.state.min$.getValue()),
                 this.state.max$.getValue(),
             )
-            if (!isNaN(v) && v != this.state.value$.getValue())
+            if (!isNaN(v) && v != this.state.value$.getValue()) {
                 this.state.value$.next(v)
+            }
         }
 
         constructor({ state, ...rest }: { state: State }) {
             Object.assign(this, rest)
             this.state = state
 
-            this.value = attr$(
-                state.value$.pipe(distinctUntilChanged()),
-                (v) => v,
+            this.value = state.value$.pipe(
+                distinctUntilChanged(),
+                map((s) => `${s}`),
             )
-            this.min = attr$(state.min$.pipe(distinctUntilChanged()), (v) => v)
-            this.max = attr$(state.max$.pipe(distinctUntilChanged()), (v) => v)
+            this.min = state.min$.pipe(
+                distinctUntilChanged(),
+                map((s) => `${s}`),
+            )
+            this.max = state.max$.pipe(
+                distinctUntilChanged(),
+                map((s) => `${s}`),
+            )
         }
     }
 }

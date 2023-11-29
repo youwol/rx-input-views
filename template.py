@@ -2,13 +2,17 @@ import shutil
 from pathlib import Path
 
 from youwol.pipelines.pipeline_typescript_weback_npm import Template, PackageType, Dependencies, \
-    RunTimeDeps, generate_template
-from youwol_utils import parse_json
+    RunTimeDeps, generate_template, Bundles, MainModule
+from youwol.utils import parse_json
 
 folder_path = Path(__file__).parent
 
 pkg_json = parse_json(folder_path / 'package.json')
 
+load_dependencies = {
+    "rxjs": "^7.5.6",
+    "@youwol/rx-vdom": "^1.0.1"
+}
 
 template = Template(
     path=folder_path,
@@ -19,14 +23,16 @@ template = Template(
     author=pkg_json['author'],
     dependencies=Dependencies(
         runTime=RunTimeDeps(
-            load={
-                "rxjs": "^6.5.5",
-                "@youwol/flux-view": "^1.0.3"
-            }
+            externals=load_dependencies
         ),
         devTime={}
     ),
-    userGuide=True
+    userGuide=False,
+    bundles=Bundles(
+        mainModule=MainModule(
+            entryFile='./index.ts',
+            loadDependencies=list(load_dependencies.keys())
+        ))
 )
 
 generate_template(template)

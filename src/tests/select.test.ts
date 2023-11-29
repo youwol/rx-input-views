@@ -1,18 +1,18 @@
-import { render } from '@youwol/flux-view'
+import { render } from '@youwol/rx-vdom'
 import { BehaviorSubject } from 'rxjs'
 import { Select } from '../index'
 
-test('select', (done) => {
-    let items$ = new BehaviorSubject([
+test('select', async () => {
+    const items$ = new BehaviorSubject([
         new Select.ItemData('a', 'a'),
         new Select.ItemData('b', 'b'),
     ])
-    let id$ = new BehaviorSubject('b')
-    let state = new Select.State(items$, id$)
+    const id$ = new BehaviorSubject('b')
+    const state = new Select.State(items$, id$)
 
-    let view = new Select.View({ state })
+    const view = new Select.View({ state })
 
-    let div = render(view)
+    const div = render(view)
 
     document.body.appendChild(div)
 
@@ -34,24 +34,23 @@ test('select', (done) => {
     // => we simulate the change
     view.onchange({ target: [{ selected: true, value: 'a' }] })
 
-    state.selectionId$.subscribe((d) => {
-        expect(d).toEqual('a')
-        done()
+    state.selectionId$.subscribe((v) => {
+        expect(v).toBe('a')
     })
 })
 
-test('select wit dynamic items & new selectedId', (done) => {
+test('select wit dynamic items & new selectedId', () => {
     document.body.innerHTML = ''
-    let items$ = new BehaviorSubject([
+    const items$ = new BehaviorSubject([
         new Select.ItemData('a', 'a'),
         new Select.ItemData('b', 'b'),
     ])
-    let id$ = new BehaviorSubject('b')
-    let state = new Select.State(items$, id$)
+    const id$ = new BehaviorSubject('b')
+    const state = new Select.State(items$, id$)
 
-    let view = new Select.View({ state })
+    const view = new Select.View({ state })
 
-    let div = render(view)
+    const div = render(view)
 
     document.body.appendChild(div)
 
@@ -64,5 +63,4 @@ test('select wit dynamic items & new selectedId', (done) => {
     items = Array.from(document.querySelectorAll('option'))
     expect(items.map((elem) => elem.innerText)).toEqual(['a', 'c'])
     expect(items[0].selected).toBeTruthy()
-    done()
 })

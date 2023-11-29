@@ -1,19 +1,19 @@
-# @youwol/fv-input
+# @youwol/rx-input-views
 
-Input widgets using flux-view
+Input widgets using rx-vdom
 
 This library is part of the hybrid cloud/local ecosystem
 [YouWol](https://platform.youwol.com/applications/@youwol/platform/latest).
 
 ## Links
 
-[Online user-guide](https://l.youwol.com/doc/@youwol/fv-input)
+<!-- no user guide provided -->
 
-[Developers documentation](https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/fv-input)
+[Developers documentation](https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/rx-input-views&tab=doc)
 
-[Package on npm](https://www.npmjs.com/package/@youwol/fv-input)
+[Package on npm](https://www.npmjs.com/package/@youwol/rx-input-views)
 
-[Source on GitHub](https://github.com/youwol/fv-input)
+[Source on GitHub](https://github.com/youwol/rx-input-views)
 
 # Installation, Build, Test
 
@@ -38,6 +38,8 @@ yarn build:prod
 ```
 
 ---
+
+<!-- no specific test configuration documented -->
 
 To run tests:
 
